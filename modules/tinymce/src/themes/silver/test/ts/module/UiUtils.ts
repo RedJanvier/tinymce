@@ -1,7 +1,8 @@
-import { Mouse, UiFinder } from '@ephox/agar';
+import { Mouse, UiFinder, Waiter } from '@ephox/agar';
 import { Arr } from '@ephox/katamari';
 import { TinyDom } from '@ephox/mcagar';
 import { Scroll, SugarBody, SugarElement } from '@ephox/sugar';
+
 import Editor from 'tinymce/core/api/Editor';
 
 const countNumber = (container: SugarElement<Node>, selector: string) => {
@@ -42,9 +43,13 @@ const scrollRelativeEditor = (editor: Editor, relative: 'top' | 'bottom' = 'top'
   Scroll.to(0, window.pageYOffset + deltaY);
 };
 
+const pWaitForEditorToRender = () =>
+  Waiter.pTryUntil('Editor has rendered', () => UiFinder.exists(SugarBody.body(), '.tox-editor-header'));
+
 export {
   countNumber,
   extractOnlyOne,
   resizeToPos,
-  scrollRelativeEditor
+  scrollRelativeEditor,
+  pWaitForEditorToRender
 };

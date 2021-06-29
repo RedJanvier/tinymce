@@ -5,11 +5,13 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import { Arr, Fun, Obj, Optional, Strings } from '@ephox/katamari';
+import { Arr, Fun, Obj, Optional, Strings, Type } from '@ephox/katamari';
 import { Css, SugarElement } from '@ephox/sugar';
+
 import DOMUtils from 'tinymce/core/api/dom/DOMUtils';
 import Editor from 'tinymce/core/api/Editor';
 import { Dialog } from 'tinymce/core/api/ui/Ui';
+
 import * as Styles from '../actions/Styles';
 import { getDefaultAttributes, getDefaultStyles, shouldStyleWithCss } from '../api/Settings';
 import { getRowType } from '../core/TableSections';
@@ -142,58 +144,11 @@ const getSharedValues = <T>(data: Array<T>) => {
   return baseData;
 };
 
-const getAdvancedTab = (dialogName: 'table' | 'row' | 'cell') => {
-  const advTabItems: Dialog.BodyComponentSpec[] = [
-    {
-      name: 'borderstyle',
-      type: 'listbox',
-      label: 'Border style',
-      items: [
-        { text: 'Select...', value: '' },
-        { text: 'Solid', value: 'solid' },
-        { text: 'Dotted', value: 'dotted' },
-        { text: 'Dashed', value: 'dashed' },
-        { text: 'Double', value: 'double' },
-        { text: 'Groove', value: 'groove' },
-        { text: 'Ridge', value: 'ridge' },
-        { text: 'Inset', value: 'inset' },
-        { text: 'Outset', value: 'outset' },
-        { text: 'None', value: 'none' },
-        { text: 'Hidden', value: 'hidden' }
-      ]
-    },
-    {
-      name: 'bordercolor',
-      type: 'colorinput',
-      label: 'Border color'
-    },
-    {
-      name: 'backgroundcolor',
-      type: 'colorinput',
-      label: 'Background color'
-    }
-  ];
-
-  const borderWidth: Dialog.InputSpec = {
-    name: 'borderwidth',
-    type: 'input',
-    label: 'Border width'
-  };
-
-  const items = dialogName === 'cell' ? ([ borderWidth ] as Dialog.BodyComponentSpec[]).concat(advTabItems) : advTabItems;
-
-  return {
-    title: 'Advanced',
-    name: 'advanced',
-    items
-  };
-};
-
 // The extractDataFrom... functions are in this file partly for code reuse and partly so we can test them,
 // because some of these are crazy complicated
 
 const getAlignment = (formats: string[], formatName: string, editor: Editor, elm: Node) =>
-  Arr.find(formats, (name) => editor.formatter.matchNode(elm, formatName + name)).getOr('');
+  Arr.find(formats, (name) => !Type.isUndefined(editor.formatter.matchNode(elm, formatName + name))).getOr('');
 const getHAlignment = Fun.curry(getAlignment, [ 'left', 'center', 'right' ], 'align');
 const getVAlignment = Fun.curry(getAlignment, [ 'top', 'middle', 'bottom' ], 'valign');
 
@@ -307,5 +262,5 @@ const extractDataFromCellElement = (editor: Editor, cell: HTMLTableCellElement, 
   };
 };
 
-export { buildListItems, extractAdvancedStyles, getSharedValues, getAdvancedTab, extractDataFromTableElement, extractDataFromRowElement, extractDataFromCellElement, extractDataFromSettings };
+export { buildListItems, extractAdvancedStyles, getSharedValues, extractDataFromTableElement, extractDataFromRowElement, extractDataFromCellElement, extractDataFromSettings };
 

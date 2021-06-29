@@ -8,12 +8,13 @@ import Editor from 'tinymce/core/api/Editor';
 import PromisePolyfill from 'tinymce/core/api/util/Promise';
 import Plugin from 'tinymce/plugins/imagetools/Plugin';
 import Theme from 'tinymce/themes/silver/Theme';
+
 import * as ImageUtils from '../module/test/ImageUtils';
 
 describe('browser.tinymce.plugins.imagetools.ImageToolsCustomFetchTest', () => {
   const uploadHandlerState = ImageUtils.createStateContainer();
   const srcUrl = '/project/tinymce/src/plugins/imagetools/demo/img/dogleft.jpg';
-  const fetchState = Cell(Optional.none());
+  const fetchState = Cell(Optional.none<string>());
 
   const hook = TinyHooks.bddSetupLight<Editor>({
     plugins: 'imagetools',

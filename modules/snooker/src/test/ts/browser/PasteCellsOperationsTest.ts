@@ -1,4 +1,5 @@
 import { UnitTest } from '@ephox/bedrock-client';
+
 import * as TableOperations from 'ephox/snooker/api/TableOperations';
 import * as Assertions from 'ephox/snooker/test/Assertions';
 import { generateTestTable } from 'ephox/snooker/test/CreateTableUtils';
@@ -391,5 +392,139 @@ UnitTest.test('PasteCellsOperationsTest', () => {
     ),
 
     TableOperations.pasteCells, 0, 1, 1
+  );
+
+  Assertions.checkPasteRaw(
+    'TINY-6675: Paste cells/col from colgroup table into non-colgroup table',
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: false, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td></tr>',
+        '<tr><td>A3</td><td>B3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: false, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: true, lockedColumns: [] }
+    ),
+
+    TableOperations.pasteCells, 0, 0, 0
+  );
+
+  Assertions.checkPasteRaw(
+    'TINY-6675: Paste cells/col from colgroup table into non-colgroup table (adding new column and row)',
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td><td>?</td></tr>',
+        '<tr><td>A3</td><td>X1</td><td>C2</td></tr>',
+        '<tr><td>?</td><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 3, colgroup: false, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td></tr>',
+        '<tr><td>A3</td><td>B3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: false, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: true, lockedColumns: [] }
+    ),
+
+    TableOperations.pasteCells, 0, 1, 1
+  );
+
+  Assertions.checkPasteRaw(
+    'TINY-6675: Paste cells/col from non-colgroup table into colgroup table',
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: true, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td></tr>',
+        '<tr><td>A3</td><td>B3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: true, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: false, lockedColumns: [] }
+    ),
+
+    TableOperations.pasteCells, 1, 0, 0
+  );
+
+  Assertions.checkPasteRaw(
+    'TINY-6675: Paste cells/col from non-colgroup table into colgroup table (adding new column and row)',
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td><td>?</td></tr>',
+        '<tr><td>A3</td><td>X1</td><td>C2</td></tr>',
+        '<tr><td>?</td><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 3, colgroup: true, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>A2</td><td>B2</td></tr>',
+        '<tr><td>A3</td><td>B3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: true, lockedColumns: [] }
+    ),
+
+    generateTestTable(
+      [
+        '<tr><td>X1</td><td>C2</td></tr>',
+        '<tr><td>X2</td><td>C3</td></tr>'
+      ],
+      [], [],
+      { numCols: 2, colgroup: false, lockedColumns: [] }
+    ),
+
+    TableOperations.pasteCells, 1, 1, 1
   );
 });

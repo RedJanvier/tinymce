@@ -8,8 +8,10 @@
 import { Arr, Fun, Obj } from '@ephox/katamari';
 import { TableLookup } from '@ephox/snooker';
 import { SugarElement } from '@ephox/sugar';
+
 import Editor from 'tinymce/core/api/Editor';
 import { Dialog } from 'tinymce/core/api/ui/Ui';
+
 import * as Styles from '../actions/Styles';
 import * as Events from '../api/Events';
 import { hasAdvancedRowTab } from '../api/Settings';
@@ -17,6 +19,7 @@ import { switchSectionType } from '../core/TableSections';
 import * as Util from '../core/Util';
 import { ephemera } from '../selection/Ephemera';
 import * as TableSelection from '../selection/TableSelection';
+import { getAdvancedTab } from './DialogAdvancedTab';
 import { DomModifier } from './DomModifier';
 import * as Helpers from './Helpers';
 import * as RowDialogGeneralTab from './RowDialogGeneralTab';
@@ -103,7 +106,7 @@ const open = (editor: Editor) => {
         name: 'general',
         items: RowDialogGeneralTab.getItems(editor)
       },
-      Helpers.getAdvancedTab('row')
+      getAdvancedTab(editor, 'row')
     ]
   };
   const dialogPanel: Dialog.PanelSpec = {

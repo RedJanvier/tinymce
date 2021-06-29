@@ -1,6 +1,7 @@
 import { describe, it } from '@ephox/bedrock-client';
 import { assert } from 'chai';
 import fc from 'fast-check';
+
 import * as Arr from 'ephox/katamari/api/Arr';
 import * as Fun from 'ephox/katamari/api/Fun';
 import { Optional } from 'ephox/katamari/api/Optional';
@@ -63,7 +64,7 @@ describe('atomic.katamari.api.optional.OptionalsTest', () => {
       fc.array(fc.json()),
       fc.array(fc.json()),
       (before, on, after) => {
-        const beforeNones = Arr.map(before, Optional.none);
+        const beforeNones: Optional<string>[] = Arr.map(before, Optional.none);
         const afterNones = Arr.map(after, Optional.none);
         const onSomes = Arr.map(on, Optional.some);
         const output = Optionals.cat(beforeNones.concat(onSomes).concat(afterNones));

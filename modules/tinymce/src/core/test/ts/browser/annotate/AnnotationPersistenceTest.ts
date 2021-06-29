@@ -5,10 +5,13 @@ import { assert } from 'chai';
 import { AnnotatorSettings } from 'tinymce/core/api/Annotator';
 import Editor from 'tinymce/core/api/Editor';
 import Theme from 'tinymce/themes/silver/Theme';
+
 import { annotate } from '../../module/test/AnnotationAsserts';
 
 describe('browser.tinymce.core.annotate.AnnotationPersistenceTest', () => {
-  before(() => Theme());
+  before(() => {
+    Theme();
+  });
 
   const runTinyWithSettings = async (annotation: AnnotatorSettings, runTests: (editor: Editor) => void) => {
     const settings = {

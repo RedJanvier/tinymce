@@ -8,6 +8,7 @@
 import Editor from 'tinymce/core/api/Editor';
 import { GetContentEvent } from 'tinymce/core/api/EventTypes';
 import Tools from 'tinymce/core/api/util/Tools';
+
 import * as Settings from '../api/Settings';
 import * as Parser from './Parser';
 import * as Protect from './Protect';
@@ -62,7 +63,7 @@ const handleSetContent = (editor: Editor, headState, footState, evt) => {
   }
 
   // Parse header and update iframe
-  const headerFragment = Parser.parseHeader(headState.get());
+  const headerFragment = Parser.parseHeader(editor, headState.get());
   each(headerFragment.getAll('style'), (node) => {
     if (node.firstChild) {
       styles += node.firstChild.value;

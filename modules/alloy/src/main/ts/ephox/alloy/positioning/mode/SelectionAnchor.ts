@@ -41,7 +41,7 @@ const placement = (component: AlloyComponent, anchorInfo: SelectionAnchor, origi
         return rect;
       });
     });
-    return optRect.bind((rawRect) => ContentAnchorCommon.capRect(rawRect.left, rawRect.top, rawRect.width, rawRect.height));
+    return optRect.bind((rawRect) => ContentAnchorCommon.getBox(rawRect.left, rawRect.top, rawRect.width, rawRect.height));
   });
 
   const targetElement: Optional<SugarElement> = getAnchorSelection(win, anchorInfo)
@@ -53,7 +53,7 @@ const placement = (component: AlloyComponent, anchorInfo: SelectionAnchor, origi
 
 export default [
   FieldSchema.option('getSelection'),
-  FieldSchema.strict('root'),
+  FieldSchema.required('root'),
   FieldSchema.option('bubble'),
   AnchorLayouts.schema(),
   FieldSchema.defaulted('overrides', { }),
